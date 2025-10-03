@@ -39,6 +39,7 @@ class EVServiceApp {
       this.initNavigation();
       this.initDropdowns();
       this.initSearch();
+      this.initQuickActions();
 
       // Load dashboard by default
       this.loadDashboard();
@@ -213,6 +214,46 @@ class EVServiceApp {
         console.log("Searching:", e.target.value);
         // TODO: Implement search functionality
       });
+    }
+  }
+
+  /**
+   * Initialize quick actions
+   */
+  initQuickActions() {
+    const quickActionBtns = document.querySelectorAll('[data-action]');
+    
+    quickActionBtns.forEach((btn) => {
+      // Skip vehicle actions - handled by VehicleManager
+      const action = btn.getAttribute('data-action');
+      if (action === 'add-vehicle' || action === 'edit-vehicle' || action === 'delete-vehicle') {
+        return;
+      }
+      
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.handleQuickAction(action);
+      });
+    });
+  }
+
+  /**
+   * Handle quick action
+   */
+  handleQuickAction(action) {
+    switch (action) {
+      case 'add-appointment':
+        if (typeof Utils !== 'undefined' && Utils.showToast) {
+          Utils.showToast('Chức năng tạo lịch hẹn đang được phát triển', 'info');
+        }
+        break;
+      case 'add-customer':
+        if (typeof Utils !== 'undefined' && Utils.showToast) {
+          Utils.showToast('Chức năng thêm khách hàng đang được phát triển', 'info');
+        }
+        break;
+      default:
+        console.log('Unknown action:', action);
     }
   }
 

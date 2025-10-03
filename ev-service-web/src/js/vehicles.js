@@ -138,6 +138,45 @@ class VehicleManager {
               this.closeModal(modalId);
             }
           });
+          
+          // Form submission
+          const form = modal.querySelector('#vehicle-form');
+          if (form) {
+            form.addEventListener('submit', (e) => {
+              e.preventDefault();
+              this.handleVehicleSubmit(modalId, vehicleData);
+            });
+          }
+        }
+      
+        /**
+         * Handle vehicle form submission
+         */
+        handleVehicleSubmit(modalId, vehicleData = null) {
+          const modal = document.getElementById(modalId);
+          const form = modal.querySelector('#vehicle-form');
+          
+          const formData = {
+            brand: form.brand.value,
+            model: form.model.value,
+            year: form.year.value
+          };
+          
+          if (vehicleData) {
+            // Update existing vehicle
+            console.log('Updating vehicle:', formData);
+            if (typeof Utils !== 'undefined' && Utils.showToast) {
+              Utils.showToast('Cập nhật xe thành công!', 'success');
+            }
+          } else {
+            // Add new vehicle
+            console.log('Adding new vehicle:', formData);
+            if (typeof Utils !== 'undefined' && Utils.showToast) {
+              Utils.showToast('Đăng ký xe thành công!', 'success');
+            }
+          }
+          
+          this.closeModal(modalId);
         }
       
         /**
@@ -146,7 +185,12 @@ class VehicleManager {
         closeModal(modalId) {
           const modal = document.getElementById(modalId);
           if (modal) {
-            modal.remove();
+            const backdrop = modal.closest('.modal-backdrop');
+            if (backdrop) {
+              backdrop.remove();
+            } else {
+              modal.remove();
+            }
           }
         }
       
